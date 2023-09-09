@@ -30,5 +30,5 @@ const endPoint = (req, res) => {
   return res.status(200).json(data);
 };
 
-router.get("/", endPoint);
+router.get("/api", endPoint);
 module.exports = router;
