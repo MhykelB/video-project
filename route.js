@@ -20,7 +20,7 @@ const endPoint = (req, res) => {
   const data = {
     slack_name: "Mhyke",
     current_day: currentDay,
-    utc_time: new Date(),
+    utc_time: new Date().toISOString().split(".")[0] + "Z",
     track: "backend",
     github_file_url:
       "https://github.com/MhykelB/zuri_stage_one_backend/blob/main/index.js",
