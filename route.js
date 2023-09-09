@@ -17,8 +17,17 @@ const endPoint = (req, res) => {
   };
   const day = new Date().getDay();
   const currentDay = weekDay[day];
-  console.log(currentDay);
-  return res.status(200).json(currentDay);
+  const data = {
+    slack_name: "Mhyke",
+    current_day: currentDay,
+    utc_time: new Date(),
+    track: "backend",
+    github_file_url:
+      "https://github.com/MhykelB/zuri_stage_one_backend/blob/main/index.js",
+    github_repo_url: "https://github.com/MhykelB/zuri_stage_one_backend.git",
+    status_code: 200,
+  };
+  return res.status(200).json(data);
 };
 
 router.get("/", endPoint);
