@@ -5,7 +5,7 @@ const PORT = 5000;
 
 //middlewares
 app.use(cors());
-app.use("/zuri-backend-s1", route);
+app.use("/", route);
 
 console.log(new Date());
 app.listen(PORT, () => {
