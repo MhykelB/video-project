@@ -18,7 +18,7 @@ const endPoint = (req, res) => {
   const day = new Date().getDay();
   const currentDay = weekDay[day];
   const data = {
-    slack_name: "Mhyke",
+    slack_name: "Mhyke 1️⃣",
     current_day: currentDay,
     utc_time: new Date().toISOString().split(".")[0] + "Z",
     track: "backend",
