@@ -18,10 +18,10 @@ const endPoint = (req, res) => {
   const day = new Date().getDay();
   const currentDay = weekDay[day];
   const data = {
-    slack_name: "Mhyke",
+    slack_name: slack_name,
     current_day: currentDay,
     utc_time: new Date().toISOString().split(".")[0] + "Z",
-    track: "backend",
+    track: track,
     github_file_url:
       "https://github.com/MhykelB/zuri_stage_one_backend/blob/main/index.js",
     github_repo_url: "https://github.com/MhykelB/zuri_stage_one_backend.git",
