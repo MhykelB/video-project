@@ -1,13 +1,27 @@
+const express = require("express");
 const app = require("express")();
-const route = require("./route");
+require("express-async-errors");
+const route = require("./routes/route");
 const cors = require("cors");
+const connectDB = require("./DB/connectDB");
 const PORT = 5000;
+require("dotenv").config();
 
 //middlewares
 app.use(cors());
-app.use("/", route);
+app.use(express.json());
+app.use("/api", route);
 
-console.log(new Date());
-app.listen(PORT, () => {
-  console.log(`app is running on port ${PORT}`);
-});
+const start = async () => {
+  try {
+    await connectDB(process.env.MONGO_URL).then(() => {
+      console.log("connected to database");
+    });
+    app.listen(PORT, () => {
+      console.log(`app is running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+start();
