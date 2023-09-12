@@ -1,165 +1,129 @@
-# base url :
+## API Reference
 
-# GET REQUEST:
+#### BASE URL
 
-the url for GET REQUEST can be in two formats with or without a user_id path parameter
+<https://hng-be-s2.vercel.app/>
 
-# CASE 1: WITH a path parameter of user_id
+#### GET A SPECIFIC USER
 
-SUCCCESS CASES
-EXAMPLE fetch(baseurl/user_id)
-response : {
-status: 200,
-json: {
-\_id : the id you passed in,
-name : name of the corresponding user,
-}
-}
-ERROR CASES:
-1: you passed an \_id that is not formatted to mongoDB 11 digits, maybe 10 or more digits
-EXAMPLE fecth(baseurl/user_id with wrong mongoDb format)
-response : {
-status: 400,
-json: {
-message: "Cast error, wrong mongo id format"
-}
-}
-2: you passed an \_id that doesn't exist in the database
-EXAMPLE fecth(baseurl/user_id that is non-existent)
-response : {
-status: 404,
-json: {
-message: "couldn't find user with provided user_id"
-}
-}
+```http
+  GET https://hng-be-s2.vercel.app/api/<user_id>
+```
 
-# CASE 2: WITHOUT a path parameter of user_id
+| Parameter | Type     | Description                                                   |
+| :-------- | :------- | :------------------------------------------------------------ |
+| `user_id` | `string` | **Required**. the Mongo user_id of the person you want to get |
 
-this will return a json object containing an array of registered persons in the database (the database is holding some dummy data for this purpose)
-EXAMPLE fetch(baseurl)
-response : {
-status: 200,
-json: {
-allPersons: [
-{
-_id : mongoDB id,
-name: anyName1
-}, {
-_id : mongoDB id,
-name: anyName2
-}.....
-]
-}}
+##### Example
 
-# POST REQUEST:
+```http
+ fetch (https://hng-be-s2.vercel.app/mongoDBuser_id)
 
-This createsa a person instance in the database. It requires a "name" field with it's coressponding value in the request body, sent as a json object, every other field apart from the "name" field will be ignored.
+  response : {
+  status: 200,
+  json: {
+  _id :mongoDBuser_id,
+  name: "name of the person"
+  }}
+```
 
-SUCCCESS INSTANCES
-EXAMPLE: fetch (baseurl, {
-method : "POST",
-headers:{
-"Content-type": "application/json"
-}
-body: {
-JSON.stringify({ name: "jovial" })
-}
-})
-response : {
-status: 200,
-json: {
-\_id : mongodb generate id,
-name: "jovial"
-}}
+#### CREATE USER
 
-ERROR INSTANCES
-1: the name field is not provided
+```http
+  POST https://hng-be-s2.vercel.app/api
 
-response : {
-status: 400,
-message: "Please provide name field"
-}
-2: the value of the "name" field is not of data type "string"
+```
 
-response : {
-status: 400,
-message: "only string values are allowed"
-}
-3: there is an existing user in the database with the "name" value provided. Note that duplicate cases are checked with regex "/name/i " therefore if there is an existing user with name "FRED", you trying to create another user with name "fred" or "FreD" or any other variations of alphabet cases will result in a duplicate error. This is to ensure unqiueness of the name field, in case of possible future query purposes.
+| BODY   | Type     | Description                                              |
+| :----- | :------- | :------------------------------------------------------- |
+| `name` | `string` | **e.g** {name : _name of the person you want to create_} |
 
-response : {
-status: 400,
-message: "user with name "the name you passed in" already exist, please provide a unique name"
-}
+##### Example
 
-# PATCH REQUEST:
+```http
+ fetch (https://hng-be-s2.vercel.app/api, {
+  method : "POST",
+  headers:{
+  "Content-type": "application/json"
+  }
+  body: {
+  JSON.stringify({ name: "jovialcore" })
+  }})
 
-This requires a user_id path parameter and a request body containing a "newName" field, set to the new name you wish to update to.
+  response : {
+  status: 200,
+  json: {
+  _id : mongodb generate id,
+  name: "jovialcore"
+  }}
+```
 
-SUCCCESS INSTANCES
-EXAMPLE: fetch(baseurl/user_id, {
-method: "PATCH",
-headers:{"Content-type" : "application/json"},
-body: JSON.stringify({newName: "new desired name"})
-})
-response : {
-status: 200,
-json: {
-\_id : mongodb generated id of the user/person,
-name: "new desired name"
-}}
+### NOTE: ON POST REQUEST
 
-ERROR INSTANCES
-1: you passed an \_id that is not formatted to mongoDB 11 digits, maybe 10 or more digits
-EXAMPLE: fetch(baseurl/user_id with wrong mongodb format, {
-method: "PATCH",
-headers:{"Content-type" : "application/json"},
-body: JSON.stringify({newName: "new desired name"})
-})
-response : {
-status: 400,
-json: {
-message: "Cast error, wrong mongo id format"
-}}
+```
+ A regex expression /name/i checks the "name" property on the server side to ensure uniqueness so a user with the same name cannot be created twice irrespective of the alphabet case
+```
 
-3: the value of the "newName" field is not of data type "string"
-response : {
-status: 400,
-message: "only string values are allowed for provided fields and parameters"
-}
+#### EDIT AN EXISITNG USER DETAIL
 
-# DELETE REQUEST:
+```http
+  PATCH https://hng-be-s2.vercel.app/api/mongoDBuser_id
+```
 
-this requires the database id of the person you are trying to delete, passed
-as "user_id" in the path parameter. on success, it returnas the database document of the deleted user
+| BODY   | Type     | Parameter | Type             | Body Description                                  |
+| :----- | :------- | :-------- | :--------------- | :------------------------------------------------ |
+| `name` | `string` | `user_id` | `mongoID string` | {newName : _the new name you want to change to _} |
 
-EXAMPLE: fetch (baseurl/user_id, {
-method : "DELETE",
-headers:{
-"Content-type": "application/json"
-}
-})
-SUCCCESS INSTANCES
+##### Example
+
+```http
+  fetch (https://hng-be-s2.vercel.app/api, {
+  method : "PATCH",
+  headers:{
+  "Content-type": "application/json"
+  }
+  body: {
+  JSON.stringify({ name: "awwn" })
+  }})
+
+  response : {
+  status: 200,
+  json: {
+  message: "name changed succesfully"
+  updatedUser :{
+  _id : mongoDBuser_id that was passed in the path parameter,
+  name: "awwn"}
+  }}
+```
+
+#### DELETE AN EXISITNG USER
+
+```http
+  DELETE https://hng-be-s2.vercel.app/api/<mongoDBuser_id>
+    *returns the mongodb document of the deleted user
+```
+
+| Parameter | Type             | Description                                                    |
+| :-------- | :--------------- | :------------------------------------------------------------- |
+| `user_id` | `mongoID string` | **Required**. the Mongo user_id of the user you want to delete |
+
+##### Example
+
+```http
+  fetch (https://hng-be-s2.vercel.app/api/mongoDBuser_id, {
+  method : "DELETE",
+  headers:{
+  "Content-type": "application/json"
+  }
+  })
+
 response : {
 status: 200,
 json:
-{ message: "user successfully deleted", data: "deletedUserDocument" }
+{ message: "user successfully deleted",
+ data: {
+  _id :mongoDBuser_id,
+  name: "jovialcore"
+  }}
 }
-
-ERROR INSTANCES
-1: you passed an \_id that is not formatted to mongoDB 11 digits, maybe 10 or more digits
-EXAMPLE: fetch(baseurl/user_id with wrong mongodb format, {
-method: "DELETE",
-headers:{"Content-type" : "application/json"},
-body: JSON.stringify({newName: "new desired name"})
-})
-response : {
-status: 400,
-json: {
-message: "Cast error, wrong mongo id format"
-}}
-2: the "user_id" path parameter is not provided
-response : {
-status: 400,
-message: "request must specify "user_id" to be deleted in the path parameter"
-}
+```

@@ -1,3 +1,9 @@
+const path = require("path");
+const swaggerUI = require("swagger-ui-express");
+const swaggerDoc = require("./swagger.json");
+const options = {
+  customCssUrl: "https://unpkg.com/swagger-ui-dist@3/swagger-ui.css",
+};
 const express = require("express");
 const app = require("express")();
 require("express-async-errors");
@@ -13,9 +19,9 @@ app.use(cors());
 app.use(express.json());
 app.use("/api", route);
 app.use(errorHandler);
-
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc, options));
 app.get("/", (req, res) => {
-  res.send("Ready to receive requests");
+  res.sendFile(path.resolve(__dirname, "./public/index.html"));
 });
 
 const start = async () => {

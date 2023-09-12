@@ -7,6 +7,7 @@ const {
   deletePerson,
 } = require("../controllers/mainControllers");
 
+router.get("/docs", getPerson);
 router.get("/:user_id", getPerson);
 router.post("/", addPerson);
 router.patch("/:user_id", updatePerson);

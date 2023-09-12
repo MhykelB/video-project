@@ -1,0 +1,272 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "HNG CRUD REST API -STAGE TWO",
+    "description": "This allows CRUD operation to be perform on a specific resource in a database",
+    "version": "1.0.11"
+  },
+  "servers": [
+    {
+      "url": "https://hng-be-s2.vercel.app/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "user",
+      "description": "Operations about user"
+    }
+  ],
+  "paths": {
+    "/api": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Create user",
+        "description": "This creates a user with the name field.",
+        "operationId": "createUser",
+        "requestBody": {
+          "description": "Created user object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successfullCreate"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/successfullCreate"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "name field is not in request body OR name value supllied is not a string"
+          }
+        }
+      }
+    },
+    "/api/{user_id}": {
+      "get": {
+        "tags": ["user"],
+        "summary": "get a specific user by mongodbID",
+        "description": "",
+        "operationId": "get a specific user by mongodbID",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "The mongoID of the user to be fecthed . ",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successfullCreate"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/successfullCreate"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "None or Invalid user_id supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["user"],
+        "summary": "edit a user's detail  by mongodbID",
+        "description": "",
+        "operationId": "editUserByUser_id",
+        "requestBody": {
+          "description": "an object of the details to be edited",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/updateUser"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "The mongoID of the user whose details is to be changed . ",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successfullUpdate"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/successfullUpdate"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "None or Invalid user_id supplied OR -newName field missing in request body OR -newName value is not of datatype string"
+          },
+          "404": {
+            "description": "User with supllied ID not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["user"],
+        "summary": "delete a user  by mongodbID",
+        "description": "",
+        "operationId": "deleteUserByUser_id",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "The mongodbID of the user to be deleted. ",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successfulDeletion"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/successfulDeletion"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "None or Invalid user_id supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "createUser": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "jovialcore"
+          }
+        }
+      },
+      "successfullCreate": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "6500429e76ca8522b1cd1aff"
+          },
+          "name": {
+            "type": "string",
+            "example": "jovialcore"
+          }
+        }
+      },
+      "updateUser": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "awwn"
+          }
+        }
+      },
+      "successfullUpdate": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "name changed successfully"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "6500429e76ca8522b1cd1afg"
+              },
+              "name": {
+                "type": "string",
+                "example": "new name supplied"
+              }
+            }
+          }
+        }
+      },
+      "successfulDeletion": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "user successfully deleted"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "3600429e76ca8522b1cd1afg"
+              },
+              "name": {
+                "type": "string",
+                "example": "name of deleted user"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
