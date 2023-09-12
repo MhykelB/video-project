@@ -7,8 +7,8 @@ const {
   deletePerson,
 } = require("../controllers/mainControllers");
 
-router.get("/", getPerson);
+router.get("/:user_id", getPerson);
 router.post("/", addPerson);
-router.patch("/", updatePerson);
-router.delete("/", deletePerson);
+router.patch("/:user_id", updatePerson);
+router.delete("/:user_id", deletePerson);
 module.exports = router;
