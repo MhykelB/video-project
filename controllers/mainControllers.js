@@ -68,7 +68,9 @@ const updatePerson = async (req, res) => {
         "couldn't update user details, might be non-existent"
       );
     }
-    return res.status(200).json(updatedUser);
+    return res
+      .status(200)
+      .json({ message: "name changed successfully", updatedUser });
   } catch (error) {
     throw error;
   }
