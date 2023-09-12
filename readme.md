@@ -1,8 +1,6 @@
 # Project Title : HNG STAGE TWO REST API
 
-This allows CRUD operation to be perform on a specific resource in a database
-
-## API Reference
+This allows CRUD operation to be perform on a specific resource in a database## API Reference
 
 #### BASE URL
 
@@ -11,7 +9,7 @@ This allows CRUD operation to be perform on a specific resource in a database
 #### GET A SPECIFIC USER
 
 ```http
-  GET https://hng-be-s2.vercel.app/api/<user_id>
+  GET https://hng-be-s2.vercel.app/api/<mongoDBuser_id>
 ```
 
 | Parameter | Type     | Description                                                   |
@@ -22,6 +20,10 @@ This allows CRUD operation to be perform on a specific resource in a database
 
 ```http
  fetch (https://hng-be-s2.vercel.app/mongoDBuser_id)
+```
+
+```
+ON SUCCESS
 
   response : {
   status: 200,
@@ -53,9 +55,13 @@ This allows CRUD operation to be perform on a specific resource in a database
   body: {
   JSON.stringify({ name: "jovialcore" })
   }})
+```
+
+```
+ON SUCCESS
 
   response : {
-  status: 200,
+  status: 201,
   json: {
   _id : mongodb generate id,
   name: "jovialcore"
@@ -71,7 +77,7 @@ This allows CRUD operation to be perform on a specific resource in a database
 #### EDIT AN EXISITNG USER DETAIL
 
 ```http
-  PATCH https://hng-be-s2.vercel.app/api/mongoDBuser_id
+  PATCH https://hng-be-s2.vercel.app/api/<mongoDBuser_id>
 ```
 
 | BODY   | Type     | Parameter | Type             | Body Description                                  |
@@ -89,6 +95,10 @@ This allows CRUD operation to be perform on a specific resource in a database
   body: {
   JSON.stringify({ name: "awwn" })
   }})
+```
+
+```
+ON SUCCESS
 
   response : {
   status: 200,
@@ -120,6 +130,10 @@ This allows CRUD operation to be perform on a specific resource in a database
   "Content-type": "application/json"
   }
   })
+```
+
+```
+ON SUCCESS
 
 response : {
 status: 200,
@@ -128,30 +142,3 @@ json:
  }
 }
 ```
-
-## Environment Variables
-
-To run this project on a locally, you will need to add the following environment variables to your .env file
-
-`MONGO_URL = mongodb+srv://mhyke:mhykel666@node-apis.ofso7mr.mongodb.net/ZURI?retryWrites=true&w=majority`
-
-## PORT
-
-```
-The default PORT is set to 5000  if none is specified in the environment variable
-```
-
-## Deployment
-
-To deploy this project run
-
-```bash
-  npm init
-  npm start
-```
-
-## Documentation and Testing
-
-copy and paste the link into your browser to view and test endpoints. GOODLUCK!!!!
-
-[Documentation](https://hng-be-s2.vercel.app/docs/)
