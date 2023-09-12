@@ -5,7 +5,7 @@ const getPerson = async (req, res) => {
   const { user_id } = req.params;
   try {
     // const regexx = new RegExp(`^${name.trim()}$`, "i");
-    const user = await personSchema.findOne({ _id: user_id });
+    const user = await personSchema.findOne({ _id: user_id }, { __v: 0 });
     if (!user) {
       throw new notFoundError(
         `couldn't find user with provided user_id ${user_id}`
@@ -19,7 +19,7 @@ const getPerson = async (req, res) => {
 const addPerson = async (req, res) => {
   const personObj = req.body;
   const { name } = req.body;
-  if (!name || name.toString.trim() === "") {
+  if (!name || name.toString().trim() === "") {
     throw new badRequest(
       `request body must include "name" field and it's value`
     );

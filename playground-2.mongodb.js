@@ -11,8 +11,10 @@
 
 // Select the database to use.
 use("ZURI");
-const query = " john";
-const regexx = new RegExp(query.trim, "i");
+const query = "Johnbull";
+const regexx = new RegExp(`^${query}$`, "i");
 db.getCollection("persons").findOne({
   name: regexx,
 });
+
+// db.getCollection("persons").deleteMany({})
