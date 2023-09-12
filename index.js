@@ -14,6 +14,10 @@ app.use(express.json());
 app.use("/api", route);
 app.use(errorHandler);
 
+app.get("/", (req, res) => {
+  res.send("Ready to receive requests");
+});
+
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URL).then(() => {
