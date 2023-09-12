@@ -70,7 +70,7 @@ const updatePerson = async (req, res) => {
     }
     return res
       .status(200)
-      .json({ message: "name changed successfully", updatedUser });
+      .json({ message: "name changed successfully", data: updatedUser });
   } catch (error) {
     throw error;
   }
