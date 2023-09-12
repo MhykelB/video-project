@@ -48,19 +48,19 @@ const addPerson = async (req, res) => {
 };
 const updatePerson = async (req, res) => {
   const { user_id } = req.params;
-  const { newName } = req.body;
-  if (!newName || newName.toString().trim() === "") {
+  const { name } = req.body;
+  if (!name || name.toString().trim() === "") {
     throw new badRequest(
-      `request body must include "newName" field and it's value`
+      `request body must include "name" field and it's value`
     );
   }
-  if (typeof newName !== "string") {
+  if (typeof name !== "string") {
     throw new badRequest(`only string values are allowed for provided fields`);
   }
   try {
     const updatedUser = await personSchema.findOneAndUpdate(
       { _id: user_id },
-      { name: newName },
+      { name: name },
       { new: true }
     );
     if (!updatedUser) {
