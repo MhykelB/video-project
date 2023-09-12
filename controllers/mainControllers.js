@@ -65,7 +65,7 @@ const updatePerson = async (req, res) => {
     );
     if (!updatedUser) {
       throw new notFoundError(
-        "couldn't update user details, might be non-existent"
+        `update operation failed, resource with  ${user_id} could be non-existent`
       );
     }
     return res
@@ -84,9 +84,9 @@ const deletePerson = async (req, res) => {
     // const regexx = new RegExp(`^${name.trim()}$`, "i");
     const deletedUser = await personSchema.findOneAndDelete({ _id: user_id });
     if (!deletedUser) {
-      return res
-        .status(500)
-        .json({ message: "couldn't delete user, could be non-existent" });
+      throw new notFoundError(
+        `delete operation failed, resource with  ${user_id} could be non-existent`
+      );
     }
     return res
       .status(200)
