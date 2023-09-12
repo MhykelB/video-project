@@ -4,7 +4,6 @@ const { badRequest, notFoundError } = require("../errors/index");
 const getPerson = async (req, res) => {
   const { user_id } = req.params;
   try {
-    // const regexx = new RegExp(`^${name.trim()}$`, "i");
     const user = await personSchema.findOne({ _id: user_id }, { __v: 0 });
     if (!user) {
       throw new notFoundError(
@@ -41,7 +40,7 @@ const addPerson = async (req, res) => {
         .status(500)
         .json({ message: "couldn't create user try again" });
     }
-    return res.status(200).json(newUser);
+    return res.status(201).json(newUser);
   } catch (error) {
     throw error;
   }
@@ -88,9 +87,7 @@ const deletePerson = async (req, res) => {
         `delete operation failed, resource with  ${user_id} could be non-existent`
       );
     }
-    return res
-      .status(200)
-      .json({ message: "user successfully deleted", data: deletedUser });
+    return res.status(200).json({ message: "user successfully deleted" });
   } catch (error) {
     throw error;
   }

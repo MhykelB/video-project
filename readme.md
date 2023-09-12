@@ -1,3 +1,7 @@
+# Project Title : HNG STAGE TWO REST API
+
+This allows CRUD operation to be perform on a specific resource in a database
+
 ## API Reference
 
 #### BASE URL
@@ -100,7 +104,7 @@
 
 ```http
   DELETE https://hng-be-s2.vercel.app/api/<mongoDBuser_id>
-    *returns the mongodb document of the deleted user
+
 ```
 
 | Parameter | Type             | Description                                                    |
@@ -121,9 +125,33 @@ response : {
 status: 200,
 json:
 { message: "user successfully deleted",
- data: {
-  _id :mongoDBuser_id,
-  name: "jovialcore"
-  }}
+ }
 }
 ```
+
+## Environment Variables
+
+To run this project on a locally, you will need to add the following environment variables to your .env file
+
+`MONGO_URL = mongodb+srv://mhyke:mhykel666@node-apis.ofso7mr.mongodb.net/ZURI?retryWrites=true&w=majority`
+
+## PORT
+
+```
+The default PORT is set to 5000  if none is specified in the environment variable
+```
+
+## Deployment
+
+To deploy this project run
+
+```bash
+  npm init
+  npm start
+```
+
+## Documentation and Testing
+
+copy and paste the link into your browser to view and test endpoints. GOODLUCK!!!!
+
+[Documentation](https://hng-be-s2.vercel.app/docs/)

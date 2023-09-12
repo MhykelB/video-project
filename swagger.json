@@ -35,7 +35,7 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "successful operation",
             "content": {
               "application/json": {
@@ -251,19 +251,6 @@
           "message": {
             "type": "string",
             "example": "user successfully deleted"
-          },
-          "data": {
-            "type": "object",
-            "properties": {
-              "_id": {
-                "type": "string",
-                "example": "3600429e76ca8522b1cd1afg"
-              },
-              "name": {
-                "type": "string",
-                "example": "name of deleted user"
-              }
-            }
           }
         }
       }
