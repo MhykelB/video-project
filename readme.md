@@ -9,7 +9,7 @@ This allows CRUD operation to be perform on a specific resource in a database## 
 #### GET A SPECIFIC USER
 
 ```http
-  GET https://hng-be-s2.vercel.app/api/<mongoDBuser_id>
+ GET https://hng-be-s2.vercel.app/api/<mongoDBuser_id>
 ```
 
 | Parameter | Type     | Description                                                   |
@@ -40,9 +40,9 @@ ON SUCCESS
 
 ```
 
-| BODY   | Type     | Description                                              |
-| :----- | :------- | :------------------------------------------------------- |
-| `name` | `string` | **e.g** {name : _name of the person you want to create_} |
+| BODY   | Type     | Description                                                   |
+| :----- | :------- | :------------------------------------------------------------ |
+| `name` | `string` | **Required** {name : _name of the person you want to create_} |
 
 ##### Example
 
@@ -80,9 +80,9 @@ ON SUCCESS
   PATCH https://hng-be-s2.vercel.app/api/<mongoDBuser_id>
 ```
 
-| BODY   | Type     | Parameter | Type             | Body Description                                  |
-| :----- | :------- | :-------- | :--------------- | :------------------------------------------------ |
-| `name` | `string` | `user_id` | `mongoID string` | {newName : _the new name you want to change to _} |
+| BODY   | Type     | Parameter | Type             | Body Description                                            |
+| :----- | :------- | :-------- | :--------------- | :---------------------------------------------------------- |
+| `name` | `string` | `user_id` | `mongoID string` | **Required** {name : _the new name you want to change to _} |
 
 ##### Example
 
@@ -142,3 +142,22 @@ json:
  }
 }
 ```
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variable to your .env file (though this wasn't supposed to be shared)
+
+`MONGO_URL = mongodb+srv://mhyke:mhykel666@node-apis.ofso7mr.mongodb.net/ZURI?retryWrites=true&w=majority`
+
+## PORT
+
+Default port is set to 5000 if none is specified in the environment variables
+
+## Documentation
+
+## Tech Stack
+
+**Server:** Node, Express, MONGODB,
+
+Click on the link to view and test endpoints GOODLUCK!!!
+[Swagger Editor API Documentation](https://hng-be-s2.vercel.app/docs/)

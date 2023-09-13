@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "HNG CRUD REST API -STAGE TWO",
-    "description": "This allows CRUD operation to be perform on a specific resource in a database",
+    "description": "This allows CRUD operations to be perfomed on a specific resource in a mongodb database\n You can click on the [SEQUENCE-DIAGRAM LINK](https://github.com/MhykelB/hng_be_s2/blob/main/sequence%20-diagram.jpg) to view the a pictorial description of request flow.",
     "version": "1.0.11"
   },
   "servers": [
