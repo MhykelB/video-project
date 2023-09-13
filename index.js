@@ -1,4 +1,4 @@
-// const path = require("path");
+const path = require("path");
 const swaggerUI = require("swagger-ui-express");
 const swaggerDoc = require("./swagger.json");
 const options = {
@@ -21,9 +21,9 @@ app.use(express.json());
 app.use("/api", route);
 app.use(errorHandler);
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc, options));
-// app.get("/", (req, res) => {
-//   res.sendFile(path.resolve(__dirname, "./public/index.html"));
-// });
+app.get("/", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "./public/index.html"));
+});
 
 const start = async () => {
   try {
