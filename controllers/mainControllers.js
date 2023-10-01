@@ -1,96 +1,82 @@
-const personSchema = require("../model/personSchema");
-const { badRequest, notFoundError } = require("../errors/index");
+const fs = require("fs");
+const path = require("path");
+const createID = require("../libs/crypto");
 
-const getPerson = async (req, res) => {
-  const { user_id } = req.params;
-  try {
-    const user = await personSchema.findOne({ _id: user_id }, { __v: 0 });
-    if (!user) {
-      throw new notFoundError(
-        `couldn't find user with provided user_id ${user_id}`
-      );
+const createVideo = async (req, res) => {
+  const video_id = createID(10);
+  const videoFolderPath = path.join(`./uploads/${video_id}`);
+
+  fs.mkdir(videoFolderPath, { recursive: true }, (err) => {
+    if (err) {
+      return res.status(500).json({ error: "Server error, try again" });
     }
-    return res.status(200).json(user);
-  } catch (error) {
-    throw error;
-  }
-};
-const addPerson = async (req, res) => {
-  const personObj = req.body;
-  const { name } = req.body;
-  if (!name || name.toString().trim() === "") {
-    throw new badRequest(
-      `request body must include "name" field and it's value`
-    );
-  }
-  if (typeof name !== "string") {
-    throw new badRequest(`only string values are allowed on "name" field`);
-  }
-  try {
-    const regexx = new RegExp(`^${name.trim()}$`, "i");
-    const checkExisting = await personSchema.findOne({ name: regexx });
-    if (checkExisting) {
-      throw new badRequest(
-        `user with name pattern /${name}/ already exist, please provide a unique "name" property`
-      );
-    }
-    const newUser = await personSchema.create(personObj);
-    if (!newUser) {
-      return res
-        .status(500)
-        .json({ message: "couldn't create user try again" });
-    }
-    return res.status(201).json(newUser);
-  } catch (error) {
-    throw error;
-  }
-};
-const updatePerson = async (req, res) => {
-  const { user_id } = req.params;
-  const { name } = req.body;
-  if (!name || name.toString().trim() === "") {
-    throw new badRequest(
-      `request body must include "name" field and it's value`
-    );
-  }
-  if (typeof name !== "string") {
-    throw new badRequest(`only string values are allowed for provided fields`);
-  }
-  try {
-    const updatedUser = await personSchema.findOneAndUpdate(
-      { _id: user_id },
-      { name: name },
-      { new: true }
-    );
-    if (!updatedUser) {
-      throw new notFoundError(
-        `update operation failed, resource with  ${user_id} could be non-existent`
-      );
-    }
-    return res
-      .status(200)
-      .json({ message: "name changed successfully", data: updatedUser });
-  } catch (error) {
-    throw error;
-  }
-};
-const deletePerson = async (req, res) => {
-  const { user_id } = req.params;
-  if (typeof user_id !== "string") {
-    throw new badRequest(`only string values are allowed for user_id field`);
-  }
-  try {
-    // const regexx = new RegExp(`^${name.trim()}$`, "i");
-    const deletedUser = await personSchema.findOneAndDelete({ _id: user_id });
-    if (!deletedUser) {
-      throw new notFoundError(
-        `delete operation failed, resource with  ${user_id} could be non-existent`
-      );
-    }
-    return res.status(200).json({ message: "user successfully deleted" });
-  } catch (error) {
-    throw error;
-  }
+    return res.status(200).json({ success: "folder created", video_id });
+  });
 };
 
-module.exports = { addPerson, getPerson, updatePerson, deletePerson };
+const uploadVideoBytes = async (req, res) => {
+  const blobFile = req.file;
+  const { id } = req.params;
+  console.log(blobFile.buffer);
+  const existingWriteFolder = `./uploads/${id}`;
+  if (!fs.existsSync(existingWriteFolder)) {
+    return res.status(500).json({ error: "invalid ID" });
+  }
+  const filename = id + ".blob";
+  const completePath = path.join(existingWriteFolder, filename);
+  const writeStream = fs.createWriteStream(completePath, { flags: "a" });
+
+  // writeStream.write(blobFile.buffer);
+  for (let offset = 0; offset < blobFile.buffer.length; offset += 1024) {
+    const chunk = blobFile.buffer.slice(offset, offset + 1024); // Change 1024 to your desired chunk size
+    writeStream.write(chunk);
+  }
+
+  writeStream.end();
+  writeStream.on("finish", () => {
+    return res.send({
+      message: "file saved succesfully",
+      link: `http://localhost:5000/api/vids/stream/${id}`,
+    });
+  });
+  writeStream.on("error", () => {
+    return res.send("error wrting file to disk");
+  });
+};
+const streamVideo = async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  const filePath = `./uploads/${id}/${id}.blob`;
+  if (!fs.existsSync(filePath)) {
+    return res.status(500).json({ error: "invalid ID" });
+  }
+  const stat = fs.statSync(filePath);
+  const fileSize = stat.size;
+  console.log(fileSize);
+  const fileStream = fs.createReadStream(filePath);
+  const head = {
+    "Content-Length": fileSize,
+    "Content-Type": "video/mp4",
+  };
+  res.writeHead(200, head);
+  fileStream.pipe(res);
+};
+
+const autoStream = async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  const filePath = `./uploads/${id}/${id}.blob`;
+  if (!fs.existsSync(filePath)) {
+    return res.status(500).json({ error: "invalid ID" });
+  }
+  res.render("view", {
+    videoLink: `http://localhost:5000/api/vids/stream/${id}`,
+  });
+};
+
+module.exports = {
+  createVideo,
+  uploadVideoBytes,
+  streamVideo,
+  autoStream,
+};

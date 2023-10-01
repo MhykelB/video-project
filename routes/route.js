@@ -1,19 +1,18 @@
 const express = require("express");
 const router = express.Router();
+const uploadMiddleware = require("../libs/multer");
 const {
-  getPerson,
-  addPerson,
-  updatePerson,
-  deletePerson,
+  createVideo,
+  uploadVideoBytes,
+  streamVideo,
+  autoStream,
 } = require("../controllers/mainControllers");
 
-router.get("/", (req, res) => {
-  res.send(
-    `<h2>api is ready to handle CRUD requests append required parameters to get started</h2>`
-  );
-});
-router.get("/:user_id", getPerson);
-router.post("/", addPerson);
-router.patch("/:user_id", updatePerson);
-router.delete("/:user_id", deletePerson);
+console.log(__dirname);
+
+router.get("/create", createVideo);
+router.post("/upload/:id", uploadMiddleware.single("file"), uploadVideoBytes);
+router.get("/stream/:id", streamVideo);
+router.get("/autostream/:id", autoStream);
+
 module.exports = router;
