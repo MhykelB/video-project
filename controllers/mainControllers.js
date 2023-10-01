@@ -4,11 +4,11 @@ const createID = require("../libs/crypto");
 
 const createVideo = async (req, res) => {
   const video_id = createID(10);
-  const videoFolderPath = path.join(`./uploads/${video_id}`);
+  const videoFolderPath = path.join(__dirname, `/uploads/${video_id}`);
 
   fs.mkdir(videoFolderPath, { recursive: true }, (err) => {
     if (err) {
-      return res.status(500).json({ error: "Server error, try again" });
+      return res.status(500).json({ error: err });
     }
     return res.status(200).json({ success: "folder created", video_id });
   });
