@@ -4,7 +4,7 @@ const createID = require("../libs/crypto");
 
 const createVideo = async (req, res) => {
   const video_id = createID(10);
-  const videoFolderPath = path.join(process.cwd(), `/uploads/${video_id}`);
+  const videoFolderPath = path.join(process.cwd(), `./uploads/${video_id}`);
 
   fs.mkdir(videoFolderPath, { recursive: true }, (err) => {
     if (err) {
