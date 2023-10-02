@@ -9,7 +9,10 @@ const createVideo = async (req, res) => {
     if (err) {
       return res.status(500).json({ error: err });
     }
-    return res.status(200).json({ success: "folder created", video_id });
+    return res.status(200).json({
+      success: "folder created",
+      video_link: `http://localhost:5000/api/vids/stream/${video_id}`,
+    });
   });
 };
 
