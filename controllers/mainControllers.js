@@ -8,19 +8,11 @@ const createVideo = async (req, res) => {
     process.cwd(),
     `./public/uploads/${video_id}`
   );
-  // fs.mkdir(videoFolderPath, { recursive: true }, (err) => {
-  //   if (err) {
-  //     return res.status(500).json({ error: err });
-  //   }
-  //   return res.status(200).json({ success: "folder created", video_id });
-  // });
-
-  fs.writeFile(`/${video_id}.blob`, " ", (err) => {
+  fs.mkdir(videoFolderPath, { recursive: true }, (err) => {
     if (err) {
-      return res.send(err);
-    } else {
-      return res.send("good");
+      return res.status(500).json({ error: err });
     }
+    return res.status(200).json({ success: "folder created", video_id });
   });
 };
 
