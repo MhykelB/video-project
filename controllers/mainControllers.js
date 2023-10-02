@@ -4,13 +4,23 @@ const createID = require("../libs/crypto");
 
 const createVideo = async (req, res) => {
   const video_id = createID(10);
-  const videoFolderPath = path.join(process.cwd(), `./uploads/${video_id}`);
+  const videoFolderPath = path.join(
+    process.cwd(),
+    `./public/uploads/${video_id}`
+  );
+  // fs.mkdir(videoFolderPath, { recursive: true }, (err) => {
+  //   if (err) {
+  //     return res.status(500).json({ error: err });
+  //   }
+  //   return res.status(200).json({ success: "folder created", video_id });
+  // });
 
-  fs.mkdir(videoFolderPath, { recursive: true }, (err) => {
+  fs.writeFile(`./${video_id}.blob`, " ", (err) => {
     if (err) {
-      return res.status(500).json({ error: err });
+      return res.send(err);
+    } else {
+      return res.send("good");
     }
-    return res.status(200).json({ success: "folder created", video_id });
   });
 };
 
