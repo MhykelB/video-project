@@ -15,7 +15,7 @@ const createVideo = async (req, res) => {
   //   return res.status(200).json({ success: "folder created", video_id });
   // });
 
-  fs.writeFile(`./${video_id}.blob`, " ", (err) => {
+  fs.writeFile(`/${video_id}.blob`, " ", (err) => {
     if (err) {
       return res.send(err);
     } else {
